@@ -21,7 +21,6 @@ RUN set -ex \
   && curl -fsSL --retry 5 "${NOMAD_PACK_BASEURL}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip" -o /tmp/archive.zip \
   && unzip /tmp/archive.zip -d /srv/exports
 
-
 # ===============================================
 # BUILD RUNTIME IMAGE
 # ===============================================

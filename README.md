@@ -15,10 +15,10 @@ download the binary on the runner itself (runners have git installed by default)
 
 Monthly builds. Use "<YEAR.WEEK>" tag for pinning image version.
 
-| IMAGE | SIZE (uncompressed) |
-| :-- | :-: |
-| ALPINE | ~50MB |
-| DEBIAN | ~190MB |
+| IMAGE | SIZE | SIZE (uncompressed) |
+| :-- | :-: | :-: |
+| ALPINE | ~20MB | ~50MB |
+| DEBIAN | ~70MB | ~190MB |
 
 
 #### ENVIRONMENT VARIABLES
@@ -33,8 +33,8 @@ Monthly builds. Use "<YEAR.WEEK>" tag for pinning image version.
 
 ```bash
 # Default (print version)
-docker run --rm -it kdsda/nomad-pack:0.0.1
+docker run --rm -it kdsda/nomad-pack:alpine-0.0.1-techpreview1
 
 # List packs from public regstry
-docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pack:0.0.1 nomad-pack registry list
+docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pack:alpine-0.0.1-techpreview1 nomad-pack registry list
 ```
