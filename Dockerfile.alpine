@@ -2,14 +2,13 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3/
 # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible
 
-ARG IMAGE_NAME="alpine"
-ARG IMAGE_VERSION="3"
+ARG IMAGE_VERSION="alpine:3"
 
 # ===============================================
 # PRE-IMAGE: Download external resources
 # ===============================================
 
-FROM ${IMAGE_NAME}:${IMAGE_VERSION} AS pre
+FROM ${IMAGE_VERSION} AS pre
 
 ARG NOMAD_PACK_BASEURL="https://github.com/hashicorp/nomad-pack/releases/download/nightly"
 ARG NOMAD_PACK_VERSION="0.0.1-techpreview1"
@@ -17,9 +16,9 @@ ARG NOMAD_PACK_ARCH="linux_amd64"
 
 RUN set -ex \
   && apk --no-cache add ca-certificates curl unzip \
-  && rm -f /var/cache/apk/* \
+  && rm -rf /var/cache/apk/* \
   && mkdir -p /srv/exports \
-  && curl -fsSL -o /tmp/archive.zip "${NOMAD_PACK_BASEURL}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip" \
+  && curl -fsSL --retry 5 "${NOMAD_PACK_BASEURL}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip" -o /tmp/archive.zip \
   && unzip /tmp/archive.zip -d /srv/exports
 
 
@@ -27,14 +26,14 @@ RUN set -ex \
 # BUILD RUNTIME IMAGE
 # ===============================================
 
-FROM ${IMAGE_NAME}:${IMAGE_VERSION}
+FROM ${IMAGE_VERSION}
 
 ENV NOMAD_ADDR="http://127.0.0.1:4646"
 ENV NOMAD_TOKEN=
 
 # INSTALL PACKAGES
 RUN set -ex \
-  && apk --no-cache add git dumb-init su-exec \
+  && apk --no-cache add ca-certificates git dumb-init su-exec \
   && rm -f /var/cache/apk/*
 
 # CREATE NON-PRIVILEGED USER
