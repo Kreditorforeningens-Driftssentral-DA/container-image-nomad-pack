@@ -2,8 +2,8 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3/
 # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible
 
-ARG IMAGE_NAME="debian"
-ARG IMAGE_VERSION="stable-slim"
+ARG IMAGE_NAME="alpine"
+ARG IMAGE_VERSION="3"
 
 # ===============================================
 # PRE-IMAGE: Download external resources
@@ -16,11 +16,8 @@ ARG NOMAD_PACK_VERSION="0.0.1-techpreview1"
 ARG NOMAD_PACK_ARCH="linux_amd64"
 
 RUN set -ex \
-  && echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
-  && apt-get update \
-  && apt-get -qqy install --no-install-recommends apt-utils > /dev/null 2>&1 \
-  && apt-get -qqy install --no-install-recommends ca-certificates curl unzip \
-  && apt-get autoclean \
+  && apk --no-cache add ca-certificates curl unzip \
+  && rm -f /var/cache/apk/* \
   && mkdir -p /srv/exports \
   && curl -fsSL -o /tmp/archive.zip "${NOMAD_PACK_BASEURL}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip" \
   && unzip /tmp/archive.zip -d /srv/exports
@@ -35,24 +32,20 @@ FROM ${IMAGE_NAME}:${IMAGE_VERSION}
 ENV NOMAD_ADDR="http://127.0.0.1:4646"
 ENV NOMAD_TOKEN=
 
-# INSTALL APT-PACKAGES
+# INSTALL PACKAGES
 RUN set -ex \
-  && echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
-  && apt-get update \
-  && apt-get -qqy install --no-install-recommends apt-utils vim.tiny > /dev/null 2>&1 \
-  && apt-get -qqy install --no-install-recommends dumb-init gosu ca-certificates git \
-  && apt-get autoclean
+  && apk --no-cache add git dumb-init su-exec \
+  && rm -f /var/cache/apk/*
 
 # CREATE NON-PRIVILEGED USER
 RUN set -ex \
   && addgroup pack \
-  && adduser --quiet \
-     --ingroup pack \
-     --gecos "Nomad-Pack User" \
-     --disabled-password pack
+  && adduser -g "Nomad-Pack User" -DG "pack" pack
 
+# ADD EXTERNAL RESOURCES
 COPY --from=pre ["/srv/exports/nomad-pack", "/usr/local/bin/"]
 
-COPY --chmod="755" ["docker-entrypoint.sh", "/usr/local/bin/"]
+# CREATE STARTUP LOGIC
+COPY --chmod="755" ["scripts/alpine-entrypoint.sh", "/usr/local/bin/docker-entrypoint.sh"]
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["nomad-pack","--version"]
