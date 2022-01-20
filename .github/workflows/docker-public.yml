@@ -80,6 +80,7 @@ jobs:
         context: .
         file: "Dockerfile.${{ matrix.image }}"
         tags: ${{ steps.meta.outputs.tags }}
-        push: ${{ github.event_name != 'pull_request' }}
+        #push: ${{ github.event_name != 'pull_request' }}
+        push: false
         build-args: |
           NOMAD_PACK_VERSION={{ matrix.version }}
