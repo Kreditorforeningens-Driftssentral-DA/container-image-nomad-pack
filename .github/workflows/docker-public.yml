@@ -25,8 +25,8 @@ jobs:
         image:
         - alpine
         - debian
-        version:
-        - 0.0.1-techpreview1
+        #version:
+        #- 0.0.1-techpreview1
     steps:
     -
       name: Checkout
@@ -80,5 +80,5 @@ jobs:
         file: "Dockerfile.${{ matrix.image }}"
         tags: ${{ steps.meta.outputs.tags }}
         push: ${{ github.event_name != 'pull_request' }}
-        build-args: |
-          NOMAD_PACK_VERSION="{{ matrix.version }}"
+        #build-args: |
+        #  NOMAD_PACK_VERSION={{ matrix.version }}
