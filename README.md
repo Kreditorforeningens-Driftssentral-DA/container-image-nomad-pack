@@ -31,6 +31,7 @@ Monthly builds. Use "<YEAR.WEEK>" tag for pinning image version.
 
 ## EXAMPLES
 
+#### Using docker cli
 ```bash
 # Default (print version)
 docker run --rm -it kdsda/nomad-pack:alpine-0.0.1-techpreview1
@@ -40,4 +41,35 @@ docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pac
 
 # Render job from public registry
 docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pack:alpine-0.0.1-techpreview1 nomad-pack render traefik
+```
+#### Using GitHub Workflow
+```yml
+# GitHub Workflow
+---
+name: CICD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  
+  example:
+    runs-on: ubuntu-latest
+    container:
+      image: kdsda/nomad-pack:alpine-0.0.1-techpreview1
+    steps:
+    -
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+    -
+      name: local-nomad-pack
+      run: |
+        nomad-pack version
+        nomad-pack render <local-pack>
+    -
+      name: public-nomad-pack
+      run: |
+        nomad-pack version
+        nomad-pack render nginx
 ```
