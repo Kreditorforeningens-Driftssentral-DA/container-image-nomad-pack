@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## January 21, 2022
+  * Added github workflow example to README
+
 ## January 20, 2022
   * Manual triggered pipelines for initial image-builds to docker-hub.
   * Changed pipeline to build on monthly schedule instead of release/tag (tags from build-matrix instead).
