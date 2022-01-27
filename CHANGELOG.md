@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## January 27, 2022
-  * Added github workflow for github-registry.
+  * Added github action for github-registry build/push.
 
 ## January 21, 2022
   * Added github workflow example to README
