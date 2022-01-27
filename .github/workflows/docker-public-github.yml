@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
   
   schedule:
-  - cron: '30 0 1 * *' # https://crontab.guru/#15_0_1_*_*
+  - cron: '15 0 1 * *' # https://crontab.guru/#15_0_1_*_*
 
 env:
   REGISTRY: ghcr.io

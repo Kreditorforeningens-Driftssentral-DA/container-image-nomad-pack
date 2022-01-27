@@ -4,8 +4,9 @@
 
 The official image is missing requirement git, which makes it more or less useless.
 
+- Source on [GitHub](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack).
 - Download image from [Docker Hub](https://hub.docker.com/repository/docker/kdsda/nomad-pack).
-- Dockerfile on [GitHub](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack).
+- Download image from [GitHub](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/pkgs/container/container-image-nomad-pack).
 - HashiCorp Nomad-Pack source on [GitHub](https://github.com/hashicorp/nomad-pack).
 - HashiCorp Nomad-Pack official image on [Docker Hub](https://hub.docker.com/r/hashicorp/nomad-pack).
 
