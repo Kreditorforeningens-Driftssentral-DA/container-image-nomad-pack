@@ -71,11 +71,12 @@ jobs:
           type=raw,value=${{ matrix.version }}-${{ steps.timestamp.outputs.week }}
           type=raw,value=${{ matrix.version }}
         labels: |
-          no.kred.image.maintainer='Kreditorforeningen'
-          no.kred.image.vendor='Kreditorforeningen'
-          no.kred.image.title='Nomad-Pack'
-          no.kred.image.description='Nomad-Pack Container Image'
-          no.kred.image.timestamp="${{ steps.timestamp.outputs.date }}"
+          org.opencontainers.image.title='nomad-pack'
+          org.opencontainers.image.description='Rendering HashiCorp Nomad job-templates'
+          org.opencontainers.image.vendor='Kreditorforeningen'
+          org.opencontainers.image.authors='drift@kred.no'
+          org.opencontainers.image.source='https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack'
+          org.opencontainers.image.created="${{ steps.timestamp.outputs.date }}"
     -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v1
