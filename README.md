@@ -1,5 +1,6 @@
 # container-image-nomad-pack
-[![Build and Push (Public)](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/actions/workflows/docker-public.yml/badge.svg)](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/actions/workflows/docker-public.yml)
+[![Build and Push (DockerHub)](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/actions/workflows/docker-public-dockerhub.yml/badge.svg)](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/actions/workflows/docker-public-dockerhub.yml)
+[![Build and Push (GitHub)](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/actions/workflows/docker-public-github.yml/badge.svg)](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/actions/workflows/docker-public-github.yml)
 
 The official image is missing requirement git, which makes it more or less useless.
 
