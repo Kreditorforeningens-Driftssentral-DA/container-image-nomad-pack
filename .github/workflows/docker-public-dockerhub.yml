@@ -5,7 +5,7 @@
 # - https://github.com/docker/login-action
 # - https://github.com/docker/build-push-action
 ---
-name: Build and Push (Public)
+name: Build and Push (DockerHub)
 
 on:
   workflow_dispatch:
