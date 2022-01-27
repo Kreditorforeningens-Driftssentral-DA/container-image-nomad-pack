@@ -92,7 +92,7 @@ jobs:
         context: .
         file: "Dockerfile.${{ matrix.image }}"
         tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         push: true
-        #push: false
         build-args: |
           NOMAD_PACK_VERSION=${{ matrix.version }}
