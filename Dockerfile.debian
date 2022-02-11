@@ -11,7 +11,7 @@ ARG IMAGE_VERSION="debian:stable-slim"
 FROM ${IMAGE_VERSION} AS pre
 
 ARG NOMAD_PACK_BASEURL="https://github.com/hashicorp/nomad-pack/releases/download/nightly"
-ARG NOMAD_PACK_VERSION="0.0.1-techpreview1"
+ARG NOMAD_PACK_VERSION="0.0.1-techpreview2"
 ARG NOMAD_PACK_ARCH="linux_amd64"
 
 RUN set -ex \

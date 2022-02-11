@@ -19,7 +19,7 @@ jobs:
         - alpine
         - debian
         version:
-        - 0.0.1-techpreview1
+        - 0.0.1-techpreview2
 
     steps:
     -
