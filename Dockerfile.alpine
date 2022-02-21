@@ -10,7 +10,7 @@ ARG IMAGE_VERSION="alpine:3"
 
 FROM ${IMAGE_VERSION} AS pre
 
-ARG NOMAD_PACK_BASEURL="https://github.com/hashicorp/nomad-pack/releases/download/nightly"
+ARG NOMAD_PACK_BASEURL="https://releases.hashicorp.com"
 ARG NOMAD_PACK_VERSION="0.0.1-techpreview2"
 ARG NOMAD_PACK_ARCH="linux_amd64"
 
@@ -18,7 +18,7 @@ RUN set -ex \
   && apk --no-cache add ca-certificates curl unzip \
   && rm -rf /var/cache/apk/* \
   && mkdir -p /srv/exports \
-  && curl -fsSL --retry 5 "${NOMAD_PACK_BASEURL}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip" -o /tmp/archive.zip \
+  && curl -fsSL --retry 5 "${NOMAD_PACK_BASEURL}/nomad-pack/${NOMAD_PACK_VERSION}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip" -o /tmp/archive.zip \
   && unzip /tmp/archive.zip -d /srv/exports
 
 # ===============================================
