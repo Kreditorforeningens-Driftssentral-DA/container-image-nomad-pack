@@ -33,9 +33,10 @@ Monthly builds. Use "<YEAR.WEEK>" tag for pinning image version.
 ## EXAMPLES
 
 #### Using docker cli
+
 ```bash
 # Default (print version)
-docker run --rm -it kdsda/nomad-pack:alpine-0.0.1-techpreview1
+docker run --rm -it kdsda/nomad-pack:alpine-0.0.1-techpreview2
 
 # List packs from public registry
 docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pack:alpine-0.0.1-techpreview1 nomad-pack registry list
@@ -43,7 +44,40 @@ docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pac
 # Render job from public registry
 docker run --rm -it -e NOMAD_ADDR=https://example.nomad.com:4646 kdsda/nomad-pack:alpine-0.0.1-techpreview1 nomad-pack render traefik
 ```
-#### Using GitHub Workflow
+
+
+#### Using private pack-registries
+```bash
+# Auth: HTTP
+nomad-pack registry add example https://github.com/<github-user>/nomad-pack-private-registry --target=hello_world_private
+```
+
+```bash
+# Auth: SSH-agent
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+eval "$(ssh-agent -s)"
+ssh-add .ssh/<private-key>
+nomad-pack registry add example git@github.com:<github-user>/nomad-pack-private-registry.git --target=hello_world_private
+```
+
+```bash
+# Auth: SSH config (no agent)
+#
+# File: ~/.ssh/config
+# Host github.com
+#   Hostname github.com
+#   User git
+#   IdentityFile ~/.ssh/deploykey
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+nomad-pack registry add example git@github.com:<github-user>/nomad-pack-private-registry.git --target=hello_world_private
+```
+
+```bash
+# Using pack
+nomad-pack render hello_world_private --registry=example
+```
+
+#### Using with GitHub Workflow
 ```yml
 # GitHub Workflow
 ---

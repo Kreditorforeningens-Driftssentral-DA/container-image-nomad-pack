@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## February 25, 2022
+  * Added openssh-client to image (for authenticating w/private pack-registries).
+  * Added github.com/bitbucket.org/gitlab.com to ssh "known_hosts" during build.
+
 ## February 21, 2022
   * Updated download-url to use 'https://releases.hashicorp.com/nomad-pack/'
 
