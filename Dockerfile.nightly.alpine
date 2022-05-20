@@ -1,0 +1,59 @@
+# https://docs.docker.com/engine/reference/builder/
+# https://docs.docker.com/compose/compose-file/compose-file-v3/
+# https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible
+
+ARG IMAGE_VERSION="alpine:3"
+
+# ===============================================
+# PRE-IMAGE: Download external resources
+# ===============================================
+
+FROM ${IMAGE_VERSION} AS pre
+
+ARG PRE_RELEASE
+ARG NOMAD_PACK_BASEURL_RELEASE="https://releases.hashicorp.com"
+ARG NOMAD_PACK_BASEURL_NIGHTLY="https://github.com/hashicorp/nomad-pack/releases/download/nightly"
+ARG NOMAD_PACK_VERSION="0.0.1-techpreview2"
+ARG NOMAD_PACK_ARCH="linux_amd64"
+
+ENV NOMAD_PACK_URL="${NOMAD_PACK_BASEURL_RELEASE}/nomad-pack/${NOMAD_PACK_VERSION}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip"
+ENV NOMAD_PACK_URL_NIGHTLY="${NOMAD_PACK_BASEURL_NIGHTLY}/nomad-pack_${NOMAD_PACK_VERSION}_${NOMAD_PACK_ARCH}.zip"
+
+RUN set -ex \
+  && apk --no-cache add ca-certificates curl unzip \
+  && rm -rf /var/cache/apk/* \
+  && mkdir -p /srv/exports \
+  && if [ "${PRE_RELEASE}" ]; then NOMAD_PACK_URL=${NOMAD_PACK_URL_NIGHTLY}; fi \
+  && curl -fsSL --retry 5 "${NOMAD_PACK_URL}" -o /tmp/archive.zip \
+  && unzip /tmp/archive.zip -d /srv/exports
+
+# ===============================================
+# BUILD RUNTIME IMAGE
+# ===============================================
+
+FROM ${IMAGE_VERSION}
+
+ENV NOMAD_ADDR="http://127.0.0.1:4646"
+ENV NOMAD_TOKEN=
+
+# INSTALL PACKAGES
+RUN set -ex \
+  && apk --no-cache add ca-certificates git openssh-client dumb-init su-exec \
+  && rm -f /var/cache/apk/*
+
+# CREATE NON-PRIVILEGED USER
+RUN set -ex \
+  && addgroup pack \
+  && adduser -g "Nomad-Pack User" -DG "pack" pack \
+  && mkdir -p /home/pack/.ssh \
+  && ssh-keyscan -H github.com >> /home/pack/.ssh/known_hosts \
+  && ssh-keyscan -H bitbucket.org >> /home/pack/.ssh/known_hosts \
+  && ssh-keyscan -H gitlab.com >> /home/pack/.ssh/known_hosts
+
+# ADD EXTERNAL RESOURCES
+COPY --from=pre ["/srv/exports/nomad-pack", "/usr/local/bin/"]
+
+# CREATE STARTUP LOGIC
+COPY --chmod="755" ["scripts/alpine-entrypoint.sh", "/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["nomad-pack","--version"]

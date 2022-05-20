@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   
   schedule:
-  - cron: '15 0 15 * *' # https://crontab.guru/
+  - cron: '45 22 * * 5' # https://crontab.guru/
 
 env:
   REGISTRY_GITHUB: ghcr.io
@@ -17,19 +17,18 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     permissions:
       packages: write
       contents: read
-    
+
     strategy:
       fail-fast: false
       matrix:
         image:
         - alpine
-        - debian
         version:
-        - 0.0.1-techpreview2
+        - 0.0.1-techpreview3
 
     steps:
     -
@@ -64,8 +63,9 @@ jobs:
           ${{ env.REGISTRY_GITHUB }}/${{ env.REGISTRY_GITHUB_IMAGE }}
           ${{ env.REGISTRY_DOCKERHUB }}/${{ env.REGISTRY_DOCKERHUB_IMAGE }}
         flavor: |
-          latest=auto
-          prefix=${{ matrix.image }}-,onlatest=true
+          latest=false
+          prefix="${{ matrix.image }}-,onlatest=false"
+          suffix="-prerelease"
         tags: |
           type=raw,value=${{ matrix.version }}-${{ steps.timestamp.outputs.week }}
           type=raw,value=${{ matrix.version }}
@@ -94,9 +94,10 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: "Dockerfile.${{ matrix.image }}"
+        file: "Dockerfile.nightly.${{ matrix.image }}"
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         push: true
         build-args: |
+          PRE_RELEASE=yes
           NOMAD_PACK_VERSION=${{ matrix.version }}

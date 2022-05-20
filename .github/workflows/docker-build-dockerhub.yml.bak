@@ -44,11 +44,16 @@ jobs:
           type=raw,value=${{ matrix.version }}-${{ steps.timestamp.outputs.week }}
           type=raw,value=${{ matrix.version }}
         labels: |
-          no.kred.image.maintainer='Kreditorforeningen'
-          no.kred.image.vendor='Kreditorforeningen'
-          no.kred.image.title='Nomad-Pack'
-          no.kred.image.description='Nomad-Pack Container Image'
-          no.kred.image.timestamp="${{ steps.timestamp.outputs.date }}"
+          org.opencontainers.image.title='Nomad-Pack'
+          org.opencontainers.image.description='Nomad-Pack Container Image'
+          org.opencontainers.image.authors='Kreditorforeningen'
+          org.opencontainers.image.vendor='Kreditorforeningen'
+          org.opencontainers.image.url='https://github.com/hashicorp/nomad-pack'
+          org.opencontainers.image.documentation='https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack/blob/main/README.md'
+          org.opencontainers.image.source='https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-nomad-pack'
+          org.opencontainers.image.created="${{ steps.timestamp.outputs.date }}"
+          org.opencontainers.image.version="${{ matrix.version }}"
+          org.opencontainers.image.base.name="${{ matrix.image }}"
     -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v1
