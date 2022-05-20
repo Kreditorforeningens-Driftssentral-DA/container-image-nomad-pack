@@ -64,8 +64,8 @@ jobs:
           ${{ env.REGISTRY_DOCKERHUB }}/${{ env.REGISTRY_DOCKERHUB_IMAGE }}
         flavor: |
           latest=false
-          prefix="${{ matrix.image }}-,onlatest=false"
-          suffix="-prerelease"
+          prefix=${{ matrix.image }}-,onlatest=false
+          suffix=-prerelease
         tags: |
           type=raw,value=${{ matrix.version }}-${{ steps.timestamp.outputs.week }}
           type=raw,value=${{ matrix.version }}
