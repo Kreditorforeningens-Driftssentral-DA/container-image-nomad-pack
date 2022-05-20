@@ -1,5 +1,5 @@
 ---
-name: Build (Docker)
+name: Build Nightly (Docker)
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ env:
   REGISTRY_DOCKERHUB_IMAGE: kdsda/nomad-pack
 
 jobs:
-  docker-build:
+  docker-build-nightly:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
