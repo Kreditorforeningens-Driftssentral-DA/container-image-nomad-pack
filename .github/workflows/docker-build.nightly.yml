@@ -28,7 +28,7 @@ jobs:
         image:
         - alpine
         version:
-        - 0.0.1-techpreview.3
+        - 0.0.1-techpreview.4
 
     steps:
     -
